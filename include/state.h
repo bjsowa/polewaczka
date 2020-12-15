@@ -4,6 +4,13 @@
 enum class OpMode {
   IDLE,
   ERROR,
+  DEBUG,
+};
+
+const char *const op_mode_str[] = {
+    "IDLE",
+    "ERROR",
+    "DEBUG",
 };
 
 struct State {
@@ -11,5 +18,7 @@ struct State {
 };
 
 extern State state;
+
+void switchOpMode(OpMode new_mode);
 
 #endif // INCLUDE_STATE_H_

@@ -9,7 +9,8 @@
 
 struct Event {
   enum {
-    ERROR,
+    ERROR, // An error occured
+    DEBUG, // Debug mode requested
   } type;
 
   // a buffer for additional information about the event
@@ -20,7 +21,9 @@ const char *const error_msgs[] = {
     "Event buffer overflow", // 0
 };
 
-extern CircularBuffer<Event, kEventQueueCapacity> event_queue;
+typedef CircularBuffer<Event, kEventQueueCapacity> EventQueue;
+
+extern EventQueue event_queue;
 
 // Adds an error event to the beginning of the queue
 void error(uint8_t error_id);
