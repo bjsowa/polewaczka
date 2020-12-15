@@ -1,6 +1,8 @@
 #ifndef INCLUDE_STATE_H_
 #define INCLUDE_STATE_H_
 
+#include <events.h>
+
 enum class OpMode {
   IDLE,
   ERROR,
@@ -14,9 +16,13 @@ const char *const op_mode_str[] = {
 };
 
 struct State {
-  OpMode mode;
+  OpMode mode = OpMode::IDLE;
+  EventQueue event_queue;
+  char serial_buffer[kSerialBufferSize];
+  size_t serial_buffer_index = 0;
 };
 
+// Global state of the machine
 extern State state;
 
 void switchOpMode(OpMode new_mode);

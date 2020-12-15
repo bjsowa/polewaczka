@@ -1,24 +1,20 @@
 #include <Arduino.h>
 
-#include <CircularBuffer.h>
 #include <AccelStepper.h>
+#include <CircularBuffer.h>
 
 #include <configuration.h>
 #include <events.h>
+#include <serial.h>
 #include <state.h>
 
 State state;
-EventQueue event_queue;
 
-void setup() {
-  Serial.begin(kSerialBaud);
-
-  state.mode = OpMode::IDLE;
-}
+void setup() { Serial.begin(kSerialBaud); }
 
 void loop() {
-  while (!event_queue.isEmpty()) {
-    Event event = event_queue.pop();
+  while (!state.event_queue.isEmpty()) {
+    Event event = state.event_queue.pop();
     Serial.print("Received event: ");
 
     switch (event.type) {
@@ -32,7 +28,7 @@ void loop() {
     case Event::DEBUG:
       Serial.println("DEBUG");
       switchOpMode(OpMode::DEBUG);
-      
+
       break;
 
     default:
@@ -44,6 +40,8 @@ void loop() {
   case OpMode::IDLE:
     break;
   case OpMode::ERROR:
+    break;
+  case OpMode::DEBUG:
     break;
   }
 }

@@ -19,11 +19,10 @@ struct Event {
 
 const char *const error_msgs[] = {
     "Event buffer overflow", // 0
+    "Serial buffer overflow", // 1
 };
 
 typedef CircularBuffer<Event, kEventQueueCapacity> EventQueue;
-
-extern EventQueue event_queue;
 
 // Adds an error event to the beginning of the queue
 void error(uint8_t error_id);
