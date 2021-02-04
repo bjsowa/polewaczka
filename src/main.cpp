@@ -21,6 +21,7 @@ void loop() {
 
     case Event::ERROR:
       Serial.print("ERROR: ");
+      state.last_error = event.data[0];
       Serial.println(error_msgs[event.data[0]]);
       switchOpMode(OpMode::ERROR);
       break;
@@ -44,4 +45,5 @@ void loop() {
   case OpMode::DEBUG:
     break;
   }
+
 }

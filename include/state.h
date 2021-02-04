@@ -20,6 +20,7 @@ struct State {
   EventQueue event_queue;
   char serial_buffer[kSerialBufferSize];
   size_t serial_buffer_index = 0;
+  int8_t last_error = -1;
 };
 
 // Global state of the machine
