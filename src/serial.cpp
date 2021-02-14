@@ -3,13 +3,13 @@
 #include <serial.h>
 #include <state.h>
 
-void print_state() {}
+void printState() {}
 
-void process_command() {
+void processCommand() {
   Serial.println(state.serial_buffer);
 }
 
-void process_serial() {
+void processSerial() {
   while (Serial.available()) {
     char c = static_cast<char>(Serial.read());
 
@@ -18,7 +18,7 @@ void process_serial() {
 
     if (c == '\n') {
       state.serial_buffer[state.serial_buffer_index] = 0;
-      process_command();
+      processCommand();
       state.serial_buffer_index = 0;
     } 
     else {

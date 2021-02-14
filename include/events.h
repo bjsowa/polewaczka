@@ -19,12 +19,14 @@ struct Event {
 enum class Error {
   EVENT_QUEUE_OVERFLOW,
   SERIAL_BUFFER_OVERFLOW,
+  UNSUPPORTED_EVENT,
 };
 
-const char error1[] PROGMEM = "Event queue overflow";
-const char error2[] PROGMEM = "Serial buffer overflow";
-
-const char *const error_msgs[] = {error1, error2};
+const char *const error_msgs[] = {
+    "Event queue overflow",
+    "Serial buffer overflow",
+    "Unsupported Event",
+};
 
 typedef CircularBuffer<Event, kEventQueueCapacity> EventQueue;
 

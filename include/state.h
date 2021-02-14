@@ -3,17 +3,8 @@
 
 #include <events.h>
 
-enum class OpMode {
-  IDLE,
-  ERROR,
-  DEBUG,
-};
-
-const char *const op_mode_str[] = {
-    "IDLE",
-    "ERROR",
-    "DEBUG",
-};
+enum class OpMode { IDLE, ERROR, DEBUG };
+const char *const op_mode_str[] = {"IDLE", "ERROR", "DEBUG"};
 
 struct State {
   OpMode mode = OpMode::IDLE;

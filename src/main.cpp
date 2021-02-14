@@ -14,6 +14,7 @@ State state;
 void setup() { Serial.begin(kSerialBaud); }
 
 void loop() {
+  // Process new events
   while (!state.event_queue.isEmpty()) {
     Event event = state.event_queue.pop();
     logEvent(event);
@@ -24,12 +25,14 @@ void loop() {
       break;
 
     default:
-      logError("Unsupperted Event");
+      error(Error::UNSUPPORTED_EVENT);
     }
   }
 
-  process_serial();
+  // Perform operations common to all operation modes
+  processSerial();
 
+  // Perform operations specific to the current operation mode
   switch (state.mode) {
   case OpMode::IDLE:
     break;

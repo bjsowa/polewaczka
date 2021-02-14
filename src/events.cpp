@@ -1,19 +1,17 @@
 #include <Arduino.h>
 
 #include <events.h>
+#include <logging.h>
 #include <state.h>
 
 void error(Error err) {
   int8_t error_code = static_cast<int8_t>(err);
   state.last_error = error_code;
 
-  Serial.print(F("ERROR: "));
-  Serial.println(error_msgs[error_code]);
+  log(LogLevel::ERROR, error_msgs[error_code]);
 
   if (state.mode != OpMode::DEBUG)
     switchOpMode(OpMode::ERROR);
-  
-  state.event_queue.clear();
 }
 
 void addEvent(Event e) {
