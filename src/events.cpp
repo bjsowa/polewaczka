@@ -1,17 +1,25 @@
+#include <Arduino.h>
+
 #include <events.h>
 #include <state.h>
 
-void error(uint8_t error_id) {
-  Event e;
-  e.type = Event::ERROR;
-  e.data[0] = error_id;
-  state.event_queue.unshift(e);
+void error(Error err) {
+  int8_t error_code = static_cast<int8_t>(err);
+  state.last_error = error_code;
+
+  Serial.print(F("ERROR: "));
+  Serial.println(error_msgs[error_code]);
+
+  if (state.mode != OpMode::DEBUG)
+    switchOpMode(OpMode::ERROR);
+  
+  state.event_queue.clear();
 }
 
-void addEvent(Event *e) {
+void addEvent(Event e) {
   if (state.event_queue.isFull()) {
-    error(0);
+    error(Error::EVENT_QUEUE_OVERFLOW);
   } else {
-    state.event_queue.push(*e);
+    state.event_queue.push(e);
   }
 }
