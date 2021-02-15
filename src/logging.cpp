@@ -4,67 +4,81 @@
 #include <logging.h>
 #include <state.h>
 
-void printLogLevel(LogLevel lvl) {
-  Serial.print(log_level_str[static_cast<int8_t>(lvl)]);
-  Serial.print(": ");
-}
+void printLog(const LogLevel lvl, const char *msg) {
 
-void preLog() {
   if (state.prompt_active) {
-    Serial.println();
+    if (kFormattedLogs) {
+      Serial.print("\r");
+      Serial.print("\033[K");
+    }
+    else {
+      Serial.println();
+    }
   }
-}
 
-void postLog() {
+  if (kFormattedLogs) {
+    // Set Color depending on the log level
+    switch (lvl) {
+    case LogLevel::DEBUG:
+      Serial.print("\033[32m"); // Green
+      break;
+    case LogLevel::INFO:
+      Serial.print("\033[34m"); // Blue
+      break;
+    case LogLevel::WARNING:
+      Serial.print("\033[33m"); // Yellow
+      break;
+    case LogLevel::ERROR:
+      Serial.print("\033[31m"); // Red
+    }
+  } else {
+    // Print a string indicated the log level
+    Serial.print("[");
+    Serial.print(log_level_str[static_cast<int8_t>(lvl)]);
+    Serial.print("]: ");
+  }
+
+  // Print the actual log message
+  Serial.println(msg);
+
+  if (kFormattedLogs) {
+    // Reset graphic attributes
+    Serial.print("\033[0m");
+  }
+
   if (state.prompt_active) {
+    // Reprint the prompt and the current buffer
     Serial.print("> ");
     Serial.print(state.serial_buffer);
   }
 }
 
-void logEvent(Event e) {
-  int length;
-  char buf[kLogBufferSize];
-
-  length = sprintf(buf, "Received Event: ");
-  switch (e.type) {
-  case Event::DEBUG:
-    snprintf(buf + length, kLogBufferSize - length, "DEBUG");
-    break;
-  }
-
-  preLog();
-  printLogLevel(LogLevel::DEBUG);
-  Serial.println(buf);
-  postLog();
-}
-
-void log(LogLevel lvl, const char *fmt, ...) {
+void log(const LogLevel lvl, const char *fmt, ...) {
   char buf[kLogBufferSize];
   va_list ap;
+
+  if (lvl < kLogVerbosityLevel)
+    return;
 
   va_start(ap, fmt);
   vsnprintf(buf, sizeof(buf), fmt, ap);
 
-  preLog();
-  printLogLevel(lvl);
-  Serial.println(buf);
-  postLog();
+  printLog(lvl, buf);
 
   va_end(ap);
 }
 
-void log(LogLevel lvl, const __FlashStringHelper *fmt, ...) {
+void log(const LogLevel lvl, const __FlashStringHelper *fmt, ...) {
   char buf[kLogBufferSize];
   va_list ap;
+
+  if (lvl < kLogVerbosityLevel)
+    return;
 
   va_start(ap, fmt);
   vsnprintf_P(buf, sizeof(buf), (const char *)fmt, ap);
 
-  preLog();
-  printLogLevel(lvl);
-  Serial.println(buf);
-  postLog();
+  printLog(lvl, buf);
 
   va_end(ap);
 }

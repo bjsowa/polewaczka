@@ -4,7 +4,21 @@
 #include <logging.h>
 #include <state.h>
 
-void error(Error err) {
+void logEvent(const Event e) {
+  int length;
+  char buf[kLogBufferSize];
+
+  length = sprintf(buf, "Received Event: ");
+  switch (e.type) {
+  case Event::DEBUG:
+    snprintf(buf + length, kLogBufferSize - length, "DEBUG");
+    break;
+  }
+
+  log(LogLevel::DEBUG, buf);
+}
+
+void error(const Error err) {
   int8_t error_code = static_cast<int8_t>(err);
   state.last_error = error_code;
 
@@ -14,7 +28,7 @@ void error(Error err) {
     switchOpMode(OpMode::ERROR);
 }
 
-void addEvent(Event e) {
+void addEvent(const Event e) {
   if (state.event_queue.isFull()) {
     error(Error::EVENT_QUEUE_OVERFLOW);
   } else {

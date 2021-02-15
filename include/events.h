@@ -30,10 +30,10 @@ const char *const error_msgs[] = {
 
 typedef CircularBuffer<Event, kEventQueueCapacity> EventQueue;
 
-//
-void error(Error err);
+void logEvent(const Event e);
+void error(const Error err);
 
 // Add an event to the end of the queue
-void addEvent(Event e);
+void addEvent(const Event e);
 
 #endif // INCLUDE_EVENTS_H_

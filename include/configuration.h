@@ -3,6 +3,14 @@
 
 #include <stdint.h>
 
+#include <logging.h>
+
+// The maximum verbosity level of printed logs
+const LogLevel kLogVerbosityLevel = LogLevel::DEBUG;
+
+// Whether to use ANSI Escape sequences for formatted logs
+const bool kFormattedLogs = true;
+
 // Baud rate for serial communication
 const uint32_t kSerialBaud = 115200;
 

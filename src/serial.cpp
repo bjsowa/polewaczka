@@ -1,3 +1,5 @@
+#include <ctype.h>
+
 #include <Arduino.h>
 
 #include <logging.h>
@@ -11,8 +13,7 @@ void processCommand() {
 
   if (!strcmp(state.serial_buffer, "debug")) {
     addEvent(Event{Event::DEBUG});
-  }
-  else {
+  } else {
     log(LogLevel::ERROR, "Unknown command: \'%s\'", state.serial_buffer);
   }
 }
@@ -25,21 +26,22 @@ void processSerial() {
       continue;
 
     if (c == '\n') {
-      // Temporarily disable prompt
       if (state.mode == OpMode::DEBUG) {
+        // Temporarily disable prompt
         Serial.println();
         state.prompt_active = false;
       }
 
       processCommand();
       state.serial_buffer_index = 0;
+      state.serial_buffer[state.serial_buffer_index] = '\0';
 
-      // Reactivate new prompt
       if (state.mode == OpMode::DEBUG) {
+        // Reactivate new prompt
         Serial.print("> ");
         state.prompt_active = true;
       }
-    } else {
+    } else if (isalnum(c) || isspace(c)) {
       state.serial_buffer[state.serial_buffer_index++] = c;
 
       if (state.mode == OpMode::DEBUG)
@@ -52,6 +54,11 @@ void processSerial() {
         error(Error::SERIAL_BUFFER_OVERFLOW);
       } else {
         state.serial_buffer[state.serial_buffer_index] = '\0';
+      }
+    } else if (c == '\b' && kFormattedLogs) { // Backspace
+      if (state.serial_buffer_index > 0) {
+        Serial.print("\b \b");
+        state.serial_buffer[--state.serial_buffer_index] = '\0';
       }
     }
   }
