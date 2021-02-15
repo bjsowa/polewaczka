@@ -1,12 +1,20 @@
 #include <Arduino.h>
 
+#include <logging.h>
 #include <serial.h>
 #include <state.h>
 
 void printState() {}
 
 void processCommand() {
-  Serial.println(state.serial_buffer);
+  log(LogLevel::DEBUG, "Processing command: \'%s\'", state.serial_buffer);
+
+  if (!strcmp(state.serial_buffer, "debug")) {
+    addEvent(Event{Event::DEBUG});
+  }
+  else {
+    log(LogLevel::ERROR, "Unknown command: \'%s\'", state.serial_buffer);
+  }
 }
 
 void processSerial() {
@@ -17,17 +25,33 @@ void processSerial() {
       continue;
 
     if (c == '\n') {
-      state.serial_buffer[state.serial_buffer_index] = 0;
+      // Temporarily disable prompt
+      if (state.mode == OpMode::DEBUG) {
+        Serial.println();
+        state.prompt_active = false;
+      }
+
       processCommand();
       state.serial_buffer_index = 0;
-    } 
-    else {
-      state.serial_buffer[state.serial_buffer_index++] = c; 
+
+      // Reactivate new prompt
+      if (state.mode == OpMode::DEBUG) {
+        Serial.print("> ");
+        state.prompt_active = true;
+      }
+    } else {
+      state.serial_buffer[state.serial_buffer_index++] = c;
+
+      if (state.mode == OpMode::DEBUG)
+        Serial.print(c);
 
       // Check for buffer overflow
       if (state.serial_buffer_index == kSerialBufferSize) {
-        error(Error::SERIAL_BUFFER_OVERFLOW);
         state.serial_buffer_index = 0;
+        state.serial_buffer[state.serial_buffer_index] = '\0';
+        error(Error::SERIAL_BUFFER_OVERFLOW);
+      } else {
+        state.serial_buffer[state.serial_buffer_index] = '\0';
       }
     }
   }

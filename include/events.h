@@ -34,6 +34,6 @@ typedef CircularBuffer<Event, kEventQueueCapacity> EventQueue;
 void error(Error err);
 
 // Add an event to the end of the queue
-void addEvent(Event *e);
+void addEvent(Event e);
 
 #endif // INCLUDE_EVENTS_H_
