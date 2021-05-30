@@ -3,10 +3,13 @@
 #include <configuration.h>
 #include <logging.h>
 #include <state.h>
+#include <terminal.h>
+
+extern Terminal terminal;
 
 void printLog(const LogLevel lvl, const char *msg) {
 
-  if (state.prompt_active) {
+  if (terminal.prompt_active) {
     if (kFormattedLogs) {
       Serial.print("\r");
       Serial.print("\033[K");
@@ -32,9 +35,9 @@ void printLog(const LogLevel lvl, const char *msg) {
       Serial.print("\033[31m"); // Red
     }
   } else {
-    // Print a string indicated the log level
+    // Print a string indicating the log level
     Serial.print("[");
-    Serial.print(log_level_str[static_cast<int8_t>(lvl)]);
+    Serial.print(log_level_str[static_cast<size_t>(lvl)]);
     Serial.print("]: ");
   }
 
@@ -46,10 +49,9 @@ void printLog(const LogLevel lvl, const char *msg) {
     Serial.print("\033[0m");
   }
 
-  if (state.prompt_active) {
+  if (terminal.prompt_active) {
     // Reprint the prompt and the current buffer
-    Serial.print("> ");
-    Serial.print(state.serial_buffer);
+    terminal.printPrompt();
   }
 }
 

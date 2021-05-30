@@ -1,5 +1,4 @@
-#ifndef INCLUDE_CONFIGURATION_H_
-#define INCLUDE_CONFIGURATION_H_
+#pragma once
 
 #include <stdint.h>
 
@@ -14,8 +13,8 @@ const bool kFormattedLogs = true;
 // Baud rate for serial communication
 const uint32_t kSerialBaud = 115200;
 
-// Size of the buffer for serial read data
-const size_t kSerialBufferSize = 100;
+// Size of the buffer for terminal input
+const size_t kTerminalBufferSize = 100;
 
 // Size of the buffer for a single log message
 const size_t kLogBufferSize = 100;
@@ -46,5 +45,3 @@ const uint8_t kNumPixels = 1;
 const uint8_t kPixelPin = 20;
 
 const uint8_t kRelayPin = 2;
-
-#endif // INCLUDE_CONFIGURATION_H_

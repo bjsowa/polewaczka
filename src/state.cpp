@@ -2,6 +2,9 @@
 
 #include <logging.h>
 #include <state.h>
+#include <terminal.h>
+
+extern Terminal terminal;
 
 void switchOpMode(OpMode new_mode) {
   if (state.mode != new_mode) {
@@ -16,13 +19,12 @@ void switchOpMode(OpMode new_mode) {
 
       break;
     case OpMode::DEBUG:
-      Serial.println(F("Debug mode activated. Type \'help\' for a list of "
-                       "available commands."));
-      Serial.print("> ");
+      terminal.prompt_active = true;
+      log(LogLevel::INFO, F("Debug mode activated. Type \'help\' for a list of "
+                            "available commands."));
       noInterrupts();
       state.event_queue.clear();
       interrupts();
-      state.prompt_active = true;
       break;
     case OpMode::ERROR:
       noInterrupts();

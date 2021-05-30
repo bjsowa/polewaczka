@@ -1,5 +1,4 @@
-#ifndef INCLUDE_EVENTS_H_
-#define INCLUDE_EVENTS_H_
+#pragma once
 
 #include <stdint.h>
 
@@ -35,5 +34,3 @@ void error(const Error err);
 
 // Add an event to the end of the queue
 void addEvent(const Event e);
-
-#endif // INCLUDE_EVENTS_H_

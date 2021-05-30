@@ -6,10 +6,11 @@
 #include <configuration.h>
 #include <events.h>
 #include <logging.h>
-#include <serial.h>
+#include <terminal.h>
 #include <state.h>
 
 State state;
+Terminal terminal(Serial);
 
 void setup() {
   Serial.begin(kSerialBaud);
@@ -47,7 +48,7 @@ void loop() {
   }
 
   // Perform operations common to all operation modes
-  processSerial();
+  terminal.handleRxAvailable();
   state.stepperA.run();
   state.stepperB.run();
   state.pixels.show();
