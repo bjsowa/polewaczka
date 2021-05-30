@@ -13,9 +13,63 @@ void processCommand() {
 
   if (!strcmp(state.serial_buffer, "debug")) {
     addEvent(Event{Event::DEBUG});
-  } else {
-    log(LogLevel::ERROR, "Unknown command: \'%s\'", state.serial_buffer);
+    return;
   }
+
+  if (state.mode == OpMode::DEBUG) {
+    if (!strcmp(state.serial_buffer, "d")) {
+      log(LogLevel::INFO, "Moving left by %d steps", 500);
+      state.stepperA.moveTo(500);
+      return;
+    } else if (!strcmp(state.serial_buffer, "a")) {
+      log(LogLevel::INFO, "Moving right by %d steps", 500);
+      state.stepperA.move(-500);
+      return;
+    } else if (!strcmp(state.serial_buffer, "c")) {
+      log(LogLevel::INFO, "Moving left by %d steps", 400);
+      state.stepperB.move(400);
+      return;
+    } else if (!strcmp(state.serial_buffer, "z")) {
+      log(LogLevel::INFO, "Moving right by %d steps", 400);
+      state.stepperB.move(-400);
+      return;
+    } else if (!strcmp(state.serial_buffer, "r")) {
+      state.pixels.setPixelColor(0, Adafruit_NeoPixel::Color(255, 0, 0));
+      return;
+    } else if (!strcmp(state.serial_buffer, "g")) {
+      state.pixels.setPixelColor(0, Adafruit_NeoPixel::Color(0, 255, 0));
+      return;
+    } else if (!strcmp(state.serial_buffer, "b")) {
+      state.pixels.setPixelColor(0, Adafruit_NeoPixel::Color(0, 0, 255));
+      return;
+    } else if (!strcmp(state.serial_buffer, "w")) {
+      state.pixels.setPixelColor(0, Adafruit_NeoPixel::Color(255, 255, 255));
+      return;
+    } else if (!strcmp(state.serial_buffer, "ron")) {
+      digitalWrite(kRelayPin, LOW);
+      return;
+    } else if (!strcmp(state.serial_buffer, "roff")) {
+      digitalWrite(kRelayPin, HIGH);
+      return;
+    } else if (!strcmp(state.serial_buffer, "m")) {
+      log(LogLevel::INFO, "Measuring distance");
+
+      // Sets the trigPin on HIGH state for 10 micro seconds
+      digitalWrite(kSensorTrigPin, HIGH);
+      delayMicroseconds(10);
+      digitalWrite(kSensorTrigPin, LOW);
+
+      // Reads the echoPin, returns the sound wave travel time in microseconds
+      unsigned long duration = pulseIn(kSensorEchoPin, HIGH);
+      log(LogLevel::INFO, "Finished measuring: %d", duration);
+
+      // state.sensor.start();
+      // state.sensor_measuring = true;
+      return;
+    }
+  }
+
+  log(LogLevel::ERROR, "Unknown command: \'%s\'", state.serial_buffer);
 }
 
 void processSerial() {

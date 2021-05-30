@@ -16,14 +16,18 @@ void switchOpMode(OpMode new_mode) {
 
       break;
     case OpMode::DEBUG:
-      state.event_queue.clear();
-      Serial.println("Debug mode activated. Type \'help\' for a list of "
-                     "available commands.");
+      Serial.println(F("Debug mode activated. Type \'help\' for a list of "
+                       "available commands."));
       Serial.print("> ");
+      noInterrupts();
+      state.event_queue.clear();
+      interrupts();
       state.prompt_active = true;
       break;
     case OpMode::ERROR:
+      noInterrupts();
       state.event_queue.clear();
+      interrupts();
       break;
     }
   } else {
