@@ -1,0 +1,109 @@
+EESchema Schematic File Version 4
+EELAYER 30 0
+EELAYER END
+$Descr A4 11693 8268
+encoding utf-8
+Sheet 1 3
+Title ""
+Date ""
+Rev ""
+Comp ""
+Comment1 ""
+Comment2 ""
+Comment3 ""
+Comment4 ""
+$EndDescr
+$Comp
+L SparkFun-Boards:ARDUINO-MEGAPRO U?
+U 1 1 60B5266E
+P 2850 3950
+F 0 "U?" H 2850 6215 50  0000 C CNN
+F 1 "ARDUINO-MEGAPRO" H 2850 6124 50  0000 C CNN
+F 2 "ARDUINO_MEGA-PRO-3.3V" H 2880 4100 20  0001 C CNN
+F 3 "" H 2850 3950 50  0001 C CNN
+	1    2850 3950
+	-1   0    0    1   
+$EndComp
+$Comp
+L power:+5V #PWR?
+U 1 1 60B6DD13
+P 3900 5850
+F 0 "#PWR?" H 3900 5700 50  0001 C CNN
+F 1 "+5V" V 3915 5978 50  0000 L CNN
+F 2 "" H 3900 5850 50  0001 C CNN
+F 3 "" H 3900 5850 50  0001 C CNN
+	1    3900 5850
+	0    1    1    0   
+$EndComp
+Wire Wire Line
+	3900 5850 3650 5850
+$Sheet
+S 6100 2450 650  1150
+U 60B7901A
+F0 "Glass Detection Subsystem" 50
+F1 "glass_detection.sch" 50
+F2 "EXTINT1" O L 6100 2900 50 
+F3 "EXTINT2" O L 6100 3050 50 
+F4 "EXTINT3" O L 6100 3200 50 
+F5 "EXTINT4" O L 6100 3350 50 
+F6 "EXTINT5" O L 6100 3500 50 
+F7 "TRIG1" I L 6100 2550 50 
+F8 "TRIG2" I L 6100 2700 50 
+$EndSheet
+$Sheet
+S 6950 4650 650  450 
+U 60B7F258
+F0 "Vodka Operation Subsystem" 50
+F1 "vodka_operation.sch" 50
+$EndSheet
+Wire Wire Line
+	3650 3450 5650 3450
+Wire Wire Line
+	5650 3450 5650 3500
+Wire Wire Line
+	5650 3500 6100 3500
+Wire Wire Line
+	3650 3350 6100 3350
+Wire Wire Line
+	2050 5450 1900 5450
+Wire Wire Line
+	1900 5450 1900 6400
+Wire Wire Line
+	1900 6400 5400 6400
+Wire Wire Line
+	5400 6400 5400 3200
+Wire Wire Line
+	5400 3200 6100 3200
+Wire Wire Line
+	2050 5350 1750 5350
+Wire Wire Line
+	1750 5350 1750 6700
+Wire Wire Line
+	1750 6700 5700 6700
+Wire Wire Line
+	5700 6700 5700 3050
+Wire Wire Line
+	5700 3050 6100 3050
+Wire Wire Line
+	2050 5250 1550 5250
+Wire Wire Line
+	1550 5250 1550 7000
+Wire Wire Line
+	1550 7000 5200 7000
+Wire Wire Line
+	5200 7000 5200 2900
+Wire Wire Line
+	5200 2900 6100 2900
+Wire Wire Line
+	3650 3250 5100 3250
+Wire Wire Line
+	5100 3250 5100 2550
+Wire Wire Line
+	5100 2550 6100 2550
+Wire Wire Line
+	3650 3150 4700 3150
+Wire Wire Line
+	4700 3150 4700 2700
+Wire Wire Line
+	4700 2700 6100 2700
+$EndSCHEMATC
